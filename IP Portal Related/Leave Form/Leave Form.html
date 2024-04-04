@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leave Form</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .form-group {
+    margin-bottom: 20px;
+    }
+
+    .form-group button {
+    padding: 10px 20px;
+    background-color:#1d2630;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    }
+
+    .form-group button:hover {
+    background-color: #0056b3;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff; 
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    #a{
+        font-style:normal;
+        color:#1d2638 ; 
+    }
+    #img{
+        float: right;
+        height: 60px;
+        width: 100px;
+    }
+    input[type="text"], input[type="email"], input[type="tel"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    textarea {
+        height: 50px;
+    }
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .required {
+    color: red;
+    }
+    #submit  {
+    padding: 10px 20px;
+    background-color:#0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+   }
+   .dropdown{
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+   }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <img src="./Images/logo.png" id="img">
+    <h2 id="a">Leave Application Form </h2>
+    <form id="leaveForm">
+    <form action="#" method="post" id="referenceForm">
+        <label for="name">Employee Name: <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="dept">Department: <span class="required">*</span></label>
+        <input type="text" id="dept" name="dept" required>
+
+        <label for="design">Designation: <span class="required">*</span></label>
+        <input type="tel" id="design" name="design" required>
+
+        <label for="Enum">Employment Number: <span class="required">*</span></label>
+        <input type="text" id="Enum" name="Enum" required>
+
+        <label for="to">Today's Date: <span class="required">*</span></label>
+        <input type="date" id="to" name="to" required class="dropdown"><br>
+
+        <label for="reason">Reason for Requested Leave: <span class="required">*</span></label><br>
+        
+        <select type="dropdown" id="reason" name="reason" required class="dropdown">
+            <option>Sick</option>
+            <option>UnPaid Leave</option>
+            <option>Personal Leave</option>
+            <option>Maternity/Paternity Leave</option>
+            <option>Other</option>
+        </select>
+        <br>
+        <label for="from">Leave From: <span class="required">*</span></label>
+        <input type="date" id="from" name="from" required class="dropdown"><br>
+        <label for="to">To: <span class="required">*</span></label>
+        <input type="date" id="to" name="to" required class="dropdown"><br>
+
+        <label for="mail">Email: <span class="required">*</span></label>
+        <input type="email" id="mail" name="mail" required>
+
+        <label for="phone">Phone Number: <span class="required">*</span></label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="referenceDetails">Manager Approval:<span class="required">*</span></label></label>
+        <textarea id="referenceDetails" name="referenceDetails" required></textarea>
+     
+        <br>
+        <br>
+        <div class="form-group">
+            <button type="submit">Submit</button>
+        </div>
+        <div class="form-group">
+            <button id="download">Download PDF</button>
+        </div>
+    </form>
+    </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("download").addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent the default form submission behavior
+            const form = document.querySelector(".container");
+            var opt = {
+              margin:       1,
+              filename:     'LeaveForm.pdf',
+              image:        { type: 'jpeg', quality: 0.98 },
+              html2canvas:  { scale: 2 },
+              jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(form).set(opt).save();
+        });
+
+        document.getElementById('leaveForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            var formDataJson = {};
+            formData.forEach(function(value, key) {
+                formDataJson[key] = value;
+            });
+            console.log(formDataJson); // You can handle form data here, like sending it to a server or processing it further
+            this.reset(); // Reset the form after submission
+        });
+    });
+</script>
+
+</body>
+</html>
